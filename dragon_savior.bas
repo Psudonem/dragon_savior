@@ -15,6 +15,7 @@ For y = 0 To 7
 Next y
 
 Get (0, 0)-(7, 7), brick()
+
 PCopy 0, 1
 x = 0
 Do
