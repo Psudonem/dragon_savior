@@ -24,7 +24,10 @@ Do
     Cls
 
     Put (px, py), brick()
-    x = x + 1
+
+    k$ = InKey$
+    If k$ = "d" Then px = px + 8
+    If k$ = "a" Then px = px - 8
     PCopy 0, 1
     _Delay .1
 Loop
