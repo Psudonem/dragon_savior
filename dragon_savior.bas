@@ -17,11 +17,13 @@ Next y
 Get (0, 0)-(7, 7), brick()
 
 PCopy 0, 1
-x = 0
+px = 0
+py = 0
+
 Do
     Cls
 
-    Put (x, 30), brick()
+    Put (px, py), brick()
     x = x + 1
     PCopy 0, 1
     _Delay .1
