@@ -1,10 +1,15 @@
 I'm not sure if this is how you format this readme but here goes.\
 
+Update 3:58 AM 12/27/2022
+
+wrote the design doc. see dragonS_designdoc_1 and 2 images to get a feel for what kind of game I'm trying to make.
+please excuse my chicken scratch hehehe
 
 Update 8:29 PM 12/26/2022
 
 test.exe shows a fully loaded up game. woohoO! We have movement, and we can load in maps with a spawn point. No sprite graphics yet. I want to make sure the basic gameplay is there first before we do anything crazy with the graphics. I did write music tho (go figure). I'll post that in the next update.
 
+also! controls are wasd, and q to quit.
 
 Update 4:17 AM 12/26/2022 - 
 
