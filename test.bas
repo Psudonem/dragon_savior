@@ -1,77 +1,84 @@
-Screen 13
+Screen 13, 0, 0, 1
 f = FreeFile
-filename$ = "map/screen1.txt"
+On Error GoTo 10
 
 Dim map(50, 50)
+
 x = 0
 y = 0
-camx = 0
-camy = 0
-Open filename$ For Binary As #f
-While Not EOF(f)
-    char$ = Str$(LOF(f))
-    Get #f, , char$
+camx = 10
+camy = 4
+'$include:'world.bas'
+For y = 0 To 49
+    For x = 0 To 49
+        Read g
+        map(x, y) = g
+    Next x
+Next y
 
-    'Print char$;
 
-    For i = 0 To 4
-        Print x, y
-        c$ = Mid$(char$, i, 1)
 
-        If x > 49 Then
-            x = 0
-            y = y + 1
+
+10
+
+
+px = -1
+py = -1
+For y = 0 To 49
+    For x = 0 To 49
+        If map(x, y) = 4 Then
+            camx = x - 7
+            camy = y - 5
+            px = x
+            py = y
         End If
+    Next x
+Next y
 
 
-        If c$ = "5" Then
-
-            map(x, y) = 5
-            x = x + 1
-        End If
 
 
-        If c$ = "4" Then
 
-            map(x, y) = 4
-            x = x + 1
-        End If
-
-        If c$ = "0" Then
-
-            map(x, y) = 0
-            x = x + 1
-        End If
-
-        If c$ = "1" Then
-            map(x, y) = 1
-            x = x + 1
-
-        ElseIf c$ = "|" Then
-
-            x = 0
-            y = y + 1
-        End If
-
-    Next i
-
-
-Wend
-Close #f
-
-Sleep
 Do
     Cls
 
     For y = 0 To 10
         For x = 0 To 14
-            Line (x * 16, y * 16)-(x * 16 + 16, y * 16 + 16), map(x + camx, y + camy) * 15, BF
-            '        PSet (x, y), map(x, y) * 15
+            If (x + camx >= 0) And (x + camx < 50) And (y + camy >= 0) And (y + camy < 50) Then
+                Line (x * 16, y * 16)-(x * 16 + 16, y * 16 + 16), map(x + camx, (y + camy)) * 15, BF
+                '        PSet (x, y), map(x, y) * 15
+            End If
         Next x
     Next y
+    Line (240, 0)-(240, 200), 15
+    Locate 1, 32: Print "DRAGON"
+    Locate 2, 32: Print "SAVIOR"
     'Print "press  q to quit"
-    _Delay 1
-    camy = camy + 1
+    PCopy 0, 1
+    _Delay .1
 
+    dx = 0
+    dy = 0
+    k$ = InKey$
+    Select Case k$
+        Case "d":
+            dx = 1
+
+        Case "w":
+            dy = -1
+        Case "s":
+            dy = 1
+        Case "a":
+            dx = -1
+    End Select
+    k$ = ""
+    If map(px + dx, py + dy) = 0 Then
+        map(px, py) = 0
+        px = px + dx
+        py = py + dy
+        map(px, py) = 4
+    End If
+    camx = px - 7
+    camy = py - 5
 Loop Until InKey$ = "q"
 System
