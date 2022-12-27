@@ -1,6 +1,11 @@
 I'm not sure if this is how you format this readme but here goes.\
 
 
+Update 8:29 PM 12/26/2022
+
+test.exe shows a fully loaded up game. woohoO! We have movement, and we can load in maps with a spawn point. No sprite graphics yet. I want to make sure the basic gameplay is there first before we do anything crazy with the graphics. I did write music tho (go figure). I'll post that in the next update.
+
+
 Update 4:17 AM 12/26/2022 - 
 
 OK. i think i'm going to call it. We can read data from the text file and display it on the screen but there seems to be some sort of issue in the read process.
