@@ -1,6 +1,29 @@
 $Resize:Stretch
-Screen 13, 0, 0, 1
+Screen _NewImage(320, 200, 32), 0, 0, 1
 Cls
+Dim logo&
+logo& = _LoadImage("graphics\logo.bmp")
+
+GoSub title
+
+System
+
+
+title:
+Do
+    Cls
+    _PutImage (0, 0), logo&
+    Print "PUSH SPACE TO PLAY!"
+    Locate 9, 25: Print "K. JASEY"
+    Locate 10, 25: Print "2022"
+    PCopy 0, 1
+    _Delay .1
+
+Loop Until InKey$ = " "
+Return
+
+
+' old code
 Dim brick(64)
 Dim map(50, 50) As Integer
 
