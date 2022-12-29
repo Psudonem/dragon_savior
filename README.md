@@ -2,7 +2,7 @@ I'm not sure if this is how you format this readme but here goes.\
 NOTE: This project is written in QB64. The C files are hold over from GBMB, and I use the analyze.py program to convert them into BASIC code.
 
 
-update 1:17 AM 12/28/2022
+Update 1:17 AM 12/28/2022
 
 Pretty big update here! 
 alright so here's what I've done:
@@ -27,7 +27,7 @@ what still needs to be done:
 - enemies that move around (should I do a write up on the ai?)
 - shooty fire balls from dragon with stamina that slowly replenishes
 - health points
-- health upgrade item? could be cool to implanment
+- health upgrade item? could be cool to implament
 - next levels
 - ending screen
 - explain the controls in game!!!!!!!!!!!!!!!!!!!!!!!!
