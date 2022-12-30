@@ -363,6 +363,7 @@ If dx = 0 Then
 End If
 
 If flames(ex, ey).status = 1 Then
+    _SndVol sfx.enemydeath, 0.5
     _SndPlay sfx.enemydeath
     enemies(ex, ey).alive = 0
     enemies(ex, ey).ttl = 0
