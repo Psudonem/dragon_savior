@@ -1,6 +1,35 @@
 I'm not sure if this is how you format this readme but here goes.\
 NOTE: This project is written in QB64. The C files are hold over from GBMB, and I use the analyze.py program to convert them into BASIC code.
 
+Update 7:56 PM 12/29/2022
+
+Accomplished a lot today. not done for the day but I thought I'd update the repo with the current progress.
+
+Consider it a personal 'stand up' meeting from me to you
+
+What I've accomplished so far:
+- modularized assets are almost fully worked in
+- enemies move around! not smartly, but they move!
+- shooty fireballs (no stamina yet)
+- sfx for fireball, and killing enemy
+
+
+Todo
+- intellegent enemy AI
+- enemies that throw things at the player
+- everything pertaining to player health
+- game over/death condition
+- next levels
+- ending screen
+- explain the controls in game!!!!!!!!!!!!!!!!!!!!!!!!
+- explain the lore in game!!!!!!!!!!!!!!
+- fix game music
+
+non priority todo:
+- new enemy type? something non killable to keep the player guessing, maybe a spike that oscilates back and forth between screens...
+
+The difference between yesterday and today is pretty staggering. Stay tuned for an update later tonight!
+
 
 Update 1:17 AM 12/28/2022
 
