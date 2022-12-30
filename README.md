@@ -2,6 +2,35 @@ I'm not sure if this is how you format this readme but here goes.\
 NOTE: This project is written in QB64. The C files are hold over from GBMB, and I use the analyze.py program to convert them into BASIC code.
 
 
+Update 1:49 AM 12/30/2022
+
+I've implamented a lot of the features I wanted to implament, but the game feels like it's missing something. What do you do when the game's main idea isn't as fun as you'd hoped?
+Something to think about. I know this was a big problem with deus ex for wii u. I don't remember the title, but when those guys in montreal were developing it, they made the whole thing on paper first and made it directly to the spec. Now that game's fun but it could deffo be better, and I remember that being a common sentiment. I did somethnig similar with this game, and while it does have some fun elements, I feel like i'm missing something. Maybe I should remove the power meter? or maybe it's time for a second opinion
+
+Done:
+
+- enemies and projectiles hurt the player
+- you can kill enemies with fireballs
+
+Todo:
+
+- non killable level hazards (so u can't just spray the whole screen full of shit)
+- mutiple levels.. or one really big level?
+- death screen/game over
+- win/lose state
+- give player a way to refuel health. should it be at the end of the level or in the form of an item? i made a burger sprite but i fear it's not 
+- do we really need power/stamina? if the goal is to kill all the enemies then maybe this is extra level of challenge is too much for a simple arcade game
+- sfx/music/polish
+
+
+What do you think?
+I want to finish five games like this before school starts back up, but I also don't want to half ass this, especially since it's such a simple concept.
+
+I'll think about this further.
+
+
+
+
 Update 9:28 PM 12/29/2022
 
 I'll keep this breif.

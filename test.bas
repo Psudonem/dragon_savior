@@ -36,6 +36,7 @@ Type gameType
     enemies As Integer
     power As Integer
     hp As Integer
+    keys As Integer
     ' switch not needed anymore
 End Type
 _Font 8
@@ -59,6 +60,8 @@ Next x
 
 game.money = 0
 game.hp = 20
+game.power = 10
+
 
 sfx.door = _SndOpen("audio\door.wav")
 sfx.money = _SndOpen("audio\money.wav")
@@ -178,6 +181,12 @@ Do
     Locate 10, 32: Print "HEALTH"
     Locate 11, 33: Print "" + Str$(game.hp)
 
+
+    Color _RGB(100, 100, 100)
+    Locate 13, 32: Print "KEYS"
+    Locate 14, 33: Print "" + Str$(game.keys)
+
+
     'Print "press  q to quit"
 
     Line (0, 0)-(15 * 16, 11 * 16), _RGB(255, 255, 255), B
@@ -275,6 +284,37 @@ Return
 
 
 projUpdate:
+zx = x + camx
+zy = y + camy
+xdir = projectiles(zx, zy).xdir
+ydir = projectiles(zx, zy).ydir
+
+
+If px = zx And py = zy Then
+    game.hp = game.hp - 1
+    projectiles(zx, zy).status = 0
+
+End If
+If map(zx, zy) = 1 Then
+    projectiles(zx, zy).status = 0
+    Return
+End If
+
+If projectiles(zx, zy).ttl = 0 Then
+    projectiles(zx + xdir, zy + ydir).status = 1
+    projectiles(zx + xdir, zy + ydir).xdir = xdir
+    projectiles(zx + xdir, zy + ydir).ydir = ydir
+    projectiles(zx + xdir, zy + ydir).ttl = 7
+    projectiles(zx + xdir, zy + ydir).power = projectiles(zx + xdir, zy + ydir).power - 1
+    projectiles(zx, zy).status = 0
+    projectiles(zx, zy).power = 0
+    If projectiles(zx + xdir, zy + ydir).power = 0 Then
+        projectiles(zx + xdir, zy + ydir).status = 0
+    End If
+Else
+    projectiles(zx, zy).ttl = projectiles(zx, zy).ttl - 1
+End If
+
 Return
 
 
@@ -305,6 +345,17 @@ Return
 enemyRun:
 ex = x + camx
 ey = y + camy
+
+
+If px = ex And py = ey Then
+    game.hp = game.hp - 2
+    game.power = game.power + 1
+    enemies(ex, ey).alive = 0
+
+End If
+
+
+
 dx = Int(Rnd * 3) - 1
 dy = 0
 If dx = 0 Then
@@ -332,6 +383,8 @@ If enemies(ex, ey).ttl = 0 Then
             projectiles(ex, ey).status = 1
             projectiles(ex, ey).xdir = dx * -1
             projectiles(ex, ey).ydir = dy * -1
+            projectiles(ex, ey).ttl = 15
+            projectiles(ex, ey).power = 15
         End If
 
     End If
