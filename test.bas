@@ -34,7 +34,8 @@ End Type
 Type gameType
     money As Integer
     enemies As Integer
-    stamina As Integer
+    power As Integer
+    hp As Integer
     ' switch not needed anymore
 End Type
 _Font 8
@@ -44,6 +45,7 @@ Dim game As gameType
 
 Dim enemies(50, 50) As enemy
 Dim flames(50, 50) As flame
+Dim projectiles(50, 50) As flame
 
 Cls
 Print "please wait"
@@ -56,11 +58,16 @@ Next x
 
 
 game.money = 0
+game.hp = 20
+
 sfx.door = _SndOpen("audio\door.wav")
 sfx.money = _SndOpen("audio\money.wav")
 sfx.enemydeath = _SndOpen("audio\enemy_death.wav")
 sfx.gameplay_music = _SndOpen("audio\dragon_savior_gameplay.wav")
 sfx.flameball = _SndOpen("audio\flameBall.wav")
+' game over song will be funk.wav (famitracker)
+
+
 
 dragon& = _LoadImage("graphics\dragon.png")
 bricks& = _LoadImage("graphics\bricks.png")
@@ -68,10 +75,12 @@ money& = _LoadImage("graphics\money.png")
 hero& = _LoadImage("graphics\hero.png")
 door& = _LoadImage("graphics\door.png")
 flameSprite& = _LoadImage("graphics\flameball.png")
+projSprite& = _LoadImage("graphics\poisonrock.png")
 x = 0
 y = 0
 camx = 10
 camy = 4
+
 '$include:'world.bas'
 For y = 0 To 49
     For x = 0 To 49
@@ -119,6 +128,7 @@ Do
                 m = map(x + camx, (y + camy))
                 e = enemies(x + camx, (y + camy)).alive
                 f = flames(x + camx, y + camy).status
+                p = projectiles(x + camx, y + camy).status
                 If m = 1 Then
                     'Line (x * 16, y * 16)-(x * 16 + 16, y * 16 + 16), _RGB(63, 63, 63), BF
                     '        PSet (x, y), map(x, y) * 15
@@ -145,6 +155,11 @@ Do
                     GoSub flameUpdate
                 End If
 
+                If p = 1 Then
+                    _PutImage (x * 16, y * 16), projSprite&
+                    GoSub projUpdate
+                End If
+
             End If
         Next x
     Next y
@@ -156,8 +171,16 @@ Do
     Locate 4, 32: Print "MONEY"
     Locate 5, 33: Print "$" + Str$(game.money)
     Color _RGB(255, 100, 100)
-    Locate 6, 32: Print "POWER"
+    Locate 7, 32: Print "POWER"
+    Locate 8, 33: Print "" + Str$(game.power)
+
+    Color _RGB(255, 10, 100)
+    Locate 10, 32: Print "HEALTH"
+    Locate 11, 33: Print "" + Str$(game.hp)
+
     'Print "press  q to quit"
+
+    Line (0, 0)-(15 * 16, 11 * 16), _RGB(255, 255, 255), B
     PCopy 0, 1
     _Delay .01
 
@@ -250,6 +273,11 @@ End If
 
 Return
 
+
+projUpdate:
+Return
+
+
 fireBallSpawn:
 'fx = x + camx
 'fy = y + camy
@@ -300,7 +328,11 @@ If enemies(ex, ey).ttl = 0 Then
         enemies(ex + dx, ey + dy).ttl = Int(Rnd * 10) + 25
         enemies(ex, ey).alive = 0
         enemies(ex, ey).ttl = 0
-
+        If Int(Rnd * 10) = 1 Then
+            projectiles(ex, ey).status = 1
+            projectiles(ex, ey).xdir = dx * -1
+            projectiles(ex, ey).ydir = dy * -1
+        End If
 
     End If
 Else

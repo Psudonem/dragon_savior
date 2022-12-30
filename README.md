@@ -1,6 +1,27 @@
 I'm not sure if this is how you format this readme but here goes.\
 NOTE: This project is written in QB64. The C files are hold over from GBMB, and I use the analyze.py program to convert them into BASIC code.
 
+
+Update 9:28 PM 12/29/2022
+
+I'll keep this breif.
+- added health 
+- made the enemies "shoot projectiles" (they don't move yet"
+- made some prototypes for the game over screen (see the new png)
+- picked the perfect game over song (not in the files yet, you'll see it soon)
+
+
+todo
+- first marching order, make the blobs shoot. preferably at the player. lower the fire rate so it's not so hectic
+- everything else
+- the graphic for the projectile is pretty unclear
+- note to self: 
+	eating an enemy does -2 hp and recovers one stamina
+	taking an enemy hit does -1 hp
+
+
+
+
 Update 7:56 PM 12/29/2022
 
 Accomplished a lot today. not done for the day but I thought I'd update the repo with the current progress.
