@@ -14,6 +14,7 @@ Type sounds
     gameplay_music As Long
     enemydeath As Long
     flameball As Long
+    getHurt As Long
 End Type
 
 
@@ -40,6 +41,7 @@ Type gameType
     ' switch not needed anymore
 End Type
 _Font 8
+level = 0
 
 Dim sfx As sounds
 Dim game As gameType
@@ -47,6 +49,7 @@ Dim game As gameType
 Dim enemies(50, 50) As enemy
 Dim flames(50, 50) As flame
 Dim projectiles(50, 50) As flame
+Dim spikes(50, 50) As flame
 
 Cls
 Print "please wait"
@@ -58,16 +61,12 @@ For x = 0 To 49
 Next x
 
 
-game.money = 0
-game.hp = 20
-game.power = 10
-
-
 sfx.door = _SndOpen("audio\door.wav")
 sfx.money = _SndOpen("audio\money.wav")
 sfx.enemydeath = _SndOpen("audio\enemy_death.wav")
 sfx.gameplay_music = _SndOpen("audio\dragon_savior_gameplay.wav")
 sfx.flameball = _SndOpen("audio\flameBall.wav")
+sfx.getHurt = _SndOpen("audio\getHurt.wav")
 ' game over song will be funk.wav (famitracker)
 
 
@@ -79,28 +78,14 @@ hero& = _LoadImage("graphics\hero.png")
 door& = _LoadImage("graphics\door.png")
 flameSprite& = _LoadImage("graphics\flameball.png")
 projSprite& = _LoadImage("graphics\poisonrock.png")
-x = 0
-y = 0
-camx = 10
-camy = 4
+spike& = _LoadImage("graphics\spike.png")
+
+
 
 '$include:'world.bas'
-For y = 0 To 49
-    For x = 0 To 49
-        Read g
-        If g = 7 Then
-            enemies(x, y).alive = 1
-            enemies(x, y).ttl = 10
-        ElseIf g <> 7 Then
-            map(x, y) = g
-        End If
+'$include:'world2.bas'
 
-    Next x
-Next y
-
-
-
-
+GoTo restartgame
 10
 
 
@@ -123,6 +108,7 @@ Next y
 '_SndLoop sfx.gameplay_music  'disabled for now
 Do
     Cls
+    If game.hp < 1 Then GoTo gameOver
 
     For y = 0 To 10
         For x = 0 To 14
@@ -132,6 +118,7 @@ Do
                 e = enemies(x + camx, (y + camy)).alive
                 f = flames(x + camx, y + camy).status
                 p = projectiles(x + camx, y + camy).status
+                s = spikes(x + camx, y + camy).status
                 If m = 1 Then
                     'Line (x * 16, y * 16)-(x * 16 + 16, y * 16 + 16), _RGB(63, 63, 63), BF
                     '        PSet (x, y), map(x, y) * 15
@@ -161,6 +148,11 @@ Do
                 If p = 1 Then
                     _PutImage (x * 16, y * 16), projSprite&
                     GoSub projUpdate
+                End If
+
+                If s = 1 Then
+                    _PutImage (x * 16, y * 16), spike&
+                    GoSub spikeUpdate
                 End If
 
             End If
@@ -236,6 +228,7 @@ Do
     ElseIf map(px + dx, py + dy) = 2 Then
         map(px + dx, py + dy) = 0
         game.money = game.money + 1
+        _SndVol sfx.money, 0.3
         _SndPlay sfx.money
         GoSub marchForth
 
@@ -283,6 +276,48 @@ End If
 Return
 
 
+spikeUpdate:
+sx = x + camx
+sy = y + camy
+xdir = spikes(sx, sy).xdir
+ydir = spikes(sx, sy).ydir
+
+If sx = px And sy = py Then
+    _SndVol sfx.getHurt, .4
+    _SndPlay sfx.getHurt
+    game.hp = game.hp - 10
+    spikes(sx, sy).status = 0
+    Return
+End If
+If spikes(sx, sy).ttl = 0 Then
+    'spikes(sx,sy)
+    If map(sx, sy) > 0 Then
+        xdir = xdir * -1
+        ydir = ydir * -1
+    End If
+
+    If spikes(sx + xdir, sy + ydir).status = 1 Then
+        xdir = xdir * -1
+        ydir = ydir * -1
+
+    End If
+
+    If spikes(sx + xdir, sy + ydir).status = 0 Then
+        spikes(sx + xdir, sy + ydir).status = 1
+        spikes(sx + xdir, sy + ydir).xdir = xdir
+        spikes(sx + xdir, sy + ydir).ydir = ydir
+        spikes(sx + xdir, sy + ydir).ttl = 10
+        spikes(sx, sy).status = 0
+    End If
+Else
+    spikes(sx, sy).ttl = spikes(sx, sy).ttl - 1
+End If
+
+Return
+
+
+
+
 projUpdate:
 zx = x + camx
 zy = y + camy
@@ -291,6 +326,9 @@ ydir = projectiles(zx, zy).ydir
 
 
 If px = zx And py = zy Then
+    _SndVol sfx.getHurt, .4
+    _SndPlay sfx.getHurt
+
     game.hp = game.hp - 1
     projectiles(zx, zy).status = 0
 
@@ -348,6 +386,9 @@ ey = y + camy
 
 
 If px = ex And py = ey Then
+    _SndVol sfx.getHurt, .4
+    _SndPlay sfx.getHurt
+
     game.hp = game.hp - 2
     game.power = game.power + 1
     enemies(ex, ey).alive = 0
@@ -363,7 +404,7 @@ If dx = 0 Then
 End If
 
 If flames(ex, ey).status = 1 Then
-    _SndVol sfx.enemydeath, 0.5
+    _SndVol sfx.enemydeath, 0.3
     _SndPlay sfx.enemydeath
     enemies(ex, ey).alive = 0
     enemies(ex, ey).ttl = 0
@@ -401,5 +442,68 @@ map(px, py) = 0
 px = px + dx
 py = py + dy
 map(px, py) = 4
-
 Return
+
+
+gameOver:
+Do
+    Cls
+    Color _RGB(255, 100, 255)
+    Print
+    Print "    GAME OVER..."
+    Print
+    Print "    r - retry"
+    Print
+    Print "    q - quit"
+    k$ = InKey$
+    Select Case k$
+        Case "r"
+            GoTo restartgame
+        Case "q"
+            System
+    End Select
+    PCopy 0, 1
+Loop
+
+
+
+restartgame:
+
+
+
+game.money = 0
+game.hp = 20
+game.power = 10
+
+x = 0
+y = 0
+camx = 10
+camy = 4
+If level = 0 Then Restore level1
+If level = 1 Then Restore level2
+On Error GoTo 10
+For y = 0 To 49
+    For x = 0 To 49
+        Read g
+
+        If g = 8 Then
+            spikes(x, y).status = 1
+            spikes(x, y).ttl = 10
+            xdir = Int(Rnd * 3) - 1
+            ydir = 0
+            If xdir = 0 Then ydir = (-1) ^ (Int(Rnd * 2))
+            spikes(x, y).xdir = xdir
+            spikes(x, y).ydir = ydir
+        ElseIf g = 7 Then
+            enemies(x, y).alive = 1
+            enemies(x, y).ttl = 10
+
+        Else
+            map(x, y) = g
+        End If
+
+    Next x
+
+
+Next y
+GoTo 10
