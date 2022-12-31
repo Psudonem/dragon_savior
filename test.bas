@@ -15,6 +15,7 @@ Type sounds
     enemydeath As Long
     flameball As Long
     getHurt As Long
+    gameOver_music As Long
 End Type
 
 
@@ -64,9 +65,10 @@ Next x
 sfx.door = _SndOpen("audio\door.wav")
 sfx.money = _SndOpen("audio\money.wav")
 sfx.enemydeath = _SndOpen("audio\enemy_death.wav")
-sfx.gameplay_music = _SndOpen("audio\dragon_savior_gameplay.wav")
+sfx.gameplay_music = _SndOpen("audio\dragon world.wav")
 sfx.flameball = _SndOpen("audio\flameBall.wav")
 sfx.getHurt = _SndOpen("audio\getHurt.wav")
+sfx.gameOver_music = _SndOpen("audio\funk.wav")
 ' game over song will be funk.wav (famitracker)
 
 
@@ -79,12 +81,33 @@ door& = _LoadImage("graphics\door.png")
 flameSprite& = _LoadImage("graphics\flameball.png")
 projSprite& = _LoadImage("graphics\poisonrock.png")
 spike& = _LoadImage("graphics\spike.png")
+gameOver& = _LoadImage("graphics\gameOver.png")
+
+endCard& = _LoadImage("graphics\endCard.png")
 
 nextt& = _LoadImage("graphics\next.png")
+logo& = _LoadImage("graphics\logo.bmp")
+tutorial& = _LoadImage("graphics\tutorial.png")
+lore& = _LoadImage("graphics\lore.png")
+titleMusic& = _SndOpen("audio\dragon_savior_title.wav")
+
+
+endMusic& = _SndOpen("audio\talk the talk.wav")
 
 '$include:'world.bas'
 '$include:'world2.bas'
+'$include:'world3.bas'
 
+'https://youtu.be/-vqQGdh2KmM
+
+_SndVol titleMusic&, .1
+_SndLoop titleMusic&
+
+
+GoTo title
+game:
+
+_SndStop titleMusic&
 GoTo restartgame
 10
 
@@ -104,8 +127,8 @@ Next y
 
 
 
-
-'_SndLoop sfx.gameplay_music  'disabled for now
+_SndVol sfx.gameplay_music, .1
+_SndLoop sfx.gameplay_music 'disabled for now
 Do
     Cls
     If game.hp < 1 Then GoTo gameOver
@@ -171,9 +194,9 @@ Do
     Color _RGB(100, 255, 100)
     Locate 4, 32: Print "MONEY"
     Locate 5, 33: Print "$" + Str$(game.money)
-    Color _RGB(255, 100, 100)
-    Locate 7, 32: Print "POWER"
-    Locate 8, 33: Print "" + Str$(game.power)
+    'Color _RGB(255, 100, 100)
+    'Locate 7, 32: Print "POWER"
+    'Locate 8, 33: Print "" + Str$(game.power)
 
     Color _RGB(255, 10, 100)
     Locate 10, 32: Print "HEALTH"
@@ -181,8 +204,8 @@ Do
 
 
     Color _RGB(100, 100, 100)
-    Locate 13, 32: Print "KEYS"
-    Locate 14, 33: Print "" + Str$(game.keys)
+    Locate 13, 32: Print "LEVEL"
+    Locate 14, 33: Print "" + Str$(level + 1)
 
 
     'Print "press  q to quit"
@@ -246,6 +269,7 @@ Do
 
     ElseIf map(px + dx, py + dy) = 3 Then
         map(px + dx, py + dy) = 0
+        _SndVol sfx.door, .2
         _SndPlay sfx.door
         GoSub marchForth
     End If
@@ -458,18 +482,21 @@ Return
 
 
 gameOver:
+_SndStop sfx.gameplay_music
+_SndVol sfx.gameOver_music, .3
+_SndLoop sfx.gameOver_music
 Do
     Cls
+    _PutImage (0, 0), gameOver&
     Color _RGB(255, 100, 255)
     Print
-    Print "    GAME OVER..."
+    Print "r - retry"
     Print
-    Print "    r - retry"
-    Print
-    Print "    q - quit"
+    Print "q - quit"
     k$ = InKey$
     Select Case k$
         Case "r"
+            _SndStop sfx.gameOver_music
             GoTo restartgame
         Case "q"
             System
@@ -481,7 +508,13 @@ Loop
 
 restartgame:
 
-
+For y = 0 To 49
+    For x = 0 To 49
+        map(x, y) = 0
+        spikes(x, y).status = 0
+        enemies(x, y).alive = 0
+    Next x
+Next y
 
 game.money = 0
 game.hp = 20
@@ -493,6 +526,8 @@ camx = 10
 camy = 4
 If level = 0 Then Restore level1
 If level = 1 Then Restore level2
+If level = 2 Then Restore level3
+If level = 3 Then GoTo ending
 On Error GoTo 10
 For y = 0 To 49
     For x = 0 To 49
@@ -519,3 +554,95 @@ For y = 0 To 49
 
 Next y
 GoTo 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+title:
+Do
+    Cls
+    _PutImage (0, 0), logo&
+    Print
+    Print " PUSH P TO PLAY!"
+    Print " PUSH T FOR TUTORIAL!"
+    Locate 19, 25: Print "K. JASEY"
+    Locate 20, 25: Print "2022"
+    PCopy 0, 1
+    _Delay .1
+
+    k$ = InKey$
+Loop Until k$ <> ""
+
+Select Case k$
+    Case "p"
+        GoTo game
+    Case "t"
+        GoTo tutorial
+End Select
+GoTo title
+
+
+
+tutorial:
+Do
+    Cls
+    _PutImage (0, 0), tutorial&
+    PCopy 0, 1
+    _Delay .1
+Loop Until InKey$ = " "
+
+Do
+    Cls
+    _PutImage (0, 0), lore&
+    PCopy 0, 1
+    _Delay .1
+Loop Until InKey$ = "p"
+
+
+
+GoTo game
+
+
+
+
+
+
+
+ending:
+_SndStop sfx.gameplay_music
+_SndVol endMusic&, .3
+_SndLoop endMusic&
+Do
+    Cls
+    _PutImage (0, 0), endCard&
+    PCopy 0, 1
+    _Delay .1
+Loop Until InKey$ = " "
+
+Do
+    Cls
+    _PutImage (0, 0), endCard&
+    Color _RGB(0, 255, 255)
+    Locate 20, 0: Print "GAME CODE CONCEPT AND ASSETS BY KAI JASEY"
+    Locate 21, 0: Print "SPECIAL THANKS TO NATHAN NESTOR"
+    Locate 22, 0: Print "PROJECT COMPLETED DECEMBER 31, 2022"
+    PCopy 0, 1
+    _Delay .1
+Loop
+
+
+System
+

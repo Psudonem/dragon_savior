@@ -2,10 +2,23 @@ $Resize:Stretch
 Screen _NewImage(320, 200, 32), 0, 0, 1
 Cls
 Dim logo&
+_Font 8
 logo& = _LoadImage("graphics\logo.bmp")
+tutorial& = _LoadImage("graphics\tutorial.png")
+lore& = _LoadImage("graphics\lore.png")
+titleMusic& = _SndOpen("audio\dragon_savior_title.wav")
+dworld& = _SndOpen("audio\dragon world.wav")
 
-GoSub title
+k$ = ""
+_SndVol titleMusic&, .1
+_SndLoop titleMusic&
+GoTo title
 
+game:
+_SndStop titleMusic&
+_SndVol dworld&, .2
+_SndPlay dworld&
+Sleep
 System
 
 
@@ -13,15 +26,45 @@ title:
 Do
     Cls
     _PutImage (0, 0), logo&
-    Print "PUSH SPACE TO PLAY!"
-    Locate 9, 25: Print "K. JASEY"
-    Locate 10, 25: Print "2022"
+    Print
+    Print " PUSH P TO PLAY!"
+    Print " PUSH T FOR TUTORIAL!"
+    Locate 19, 25: Print "K. JASEY"
+    Locate 20, 25: Print "2022"
     PCopy 0, 1
     _Delay .1
 
-Loop Until InKey$ = " "
-Return
+    k$ = InKey$
+Loop Until k$ <> ""
 
+Select Case k$
+    Case "p"
+        GoTo game
+    Case "t"
+        GoTo tutorial
+End Select
+GoTo title
+
+
+
+tutorial:
+Do
+    Cls
+    _PutImage (0, 0), tutorial&
+    PCopy 0, 1
+    _Delay .1
+Loop Until InKey$ = " "
+
+Do
+    Cls
+    _PutImage (0, 0), lore&
+    PCopy 0, 1
+    _Delay .1
+Loop Until InKey$ = "p"
+
+
+
+GoTo game
 
 ' old code
 Dim brick(64)
