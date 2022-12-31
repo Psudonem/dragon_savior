@@ -1,6 +1,40 @@
 I'm not sure if this is how you format this readme but here goes.\
 NOTE: This project is written in QB64. The C files are hold over from GBMB, and I use the analyze.py program to convert them into BASIC code.
 
+To run, download the repo and run "dragon_savior_main.exe". Don't move the files around, the directories are set up for a reason. I'll probably give you an itch.io release link or some release version for you to just click on in a bit. 
+
+VIDEO:
+
+https://youtu.be/s9jdzggH5XE
+
+Update 5:14 AM 12/31/2022
+I've been working on this for over 8 hours straight now.  My body is exhausted, but I'm happy to say that the project is completed!
+
+I've implemented everything major that I wanted to do. SFX are not loud or annoying, title cards, end cards, game over screen, lore, it's all there.
+Things i'd fix:
+- there are still glitches in the game. if you see in the gameplay, I think i forgot to clear the layer that contains the bullets that the enemies shoot. when the next level loads in, every projectile that was on screen in the last round is on screen in the current round
+- give money a purpose other than guiding the player through the maze
+- make money and health carry over to the next level
+- the stage music is a bit cutesy for a more edgy style hardcore game like this, tho it does fit much better than the last song I wrote (you can hear them all in the audio folder)
+- enemy ai is basically non existant, i wish they were a little smarter and would target the player 
+- i made a nice burger sprite, i wish i could have used it
+- player is hurt sprite
+- enemy "poof" sprite when it dies
+
+Things i've learned:
+- actually making and impamenting the non gameplay elements of the game are really time consuming. Writing the engine took about 60% of the time while everything else felt like a slog almost.
+- I may not finish 5 games this break
+- John Palevich's Dandy is way better than Falcom's Dragon Slayer!!!!! Way way WAY better!!!!!!
+- I need to factor in time for making the assets
+
+
+Next project needs to be way simpler so i can focus on polish and not have to grind so hard like i did with this one
+
+Next game will be a pong clone. I'll take a 48 Hour break before I discuss it any further. It will be in a new repo.
+
+I'm also going to change my planning method too. I don't want to overdesign the game, but I also don't want to code into oblivion like i did this time. This code is pretty modular, but it's not consistent at all. With some better planning it could have easily been much sexier. But we take incramental victories here! I consider this project a win as a whole.
+Thanks for reading! This project was really fun to do and I leaned a lot. 
+
 
 Update 1:49 AM 12/30/2022
 

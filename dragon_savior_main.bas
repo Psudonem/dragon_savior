@@ -71,7 +71,7 @@ sfx.getHurt = _SndOpen("audio\getHurt.wav")
 sfx.gameOver_music = _SndOpen("audio\funk.wav")
 ' game over song will be funk.wav (famitracker)
 
-
+last& = _LoadImage("graphics\lastimg.png")
 
 dragon& = _LoadImage("graphics\dragon.png")
 bricks& = _LoadImage("graphics\bricks.png")
@@ -103,8 +103,8 @@ endMusic& = _SndOpen("audio\talk the talk.wav")
 _SndVol titleMusic&, .1
 _SndLoop titleMusic&
 
-GoTo ending
-'GoTo title
+'GoTo ending
+GoTo title
 game:
 
 _SndStop titleMusic&
@@ -401,7 +401,7 @@ flames(px + fdx, py + fdy).ydir = fdy
 
 flames(px + fdx, py + fdy).power = 5
 
-
+_SndVol sfx.flameball, .3
 _SndPlay sfx.flameball
 
 'If map(fx, fy + 1) = 0 Then
@@ -631,12 +631,12 @@ Do
     _PutImage (0, 0), endCard&
     PCopy 0, 1
     _Delay .1
-Loop Until InKey$ = " "
+Loop Until InKey$ <> ""
 
 Color _RGB(0, 255, 255)
 Do
     Cls
-    ' _PutImage (0, 0), endCard&
+    _PutImage (0, 0), last&
     Print
     Print " GAME CODE CONCEPT AND ASSETS BY "
     Print
@@ -647,9 +647,14 @@ Do
     Print "  NATHAN NESTOR"
     Print
     Print
+    Print
+    Print
+    Print
+    Print
+    Print
     Print "  PROJECT DURATION:"
     Print
-    Print "     DECEMBER 25-31, 2022"
+    Print "  DEC 25-31, 2022"
 
     PCopy 0, 1
     _Delay .1
