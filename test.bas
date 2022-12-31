@@ -80,7 +80,7 @@ flameSprite& = _LoadImage("graphics\flameball.png")
 projSprite& = _LoadImage("graphics\poisonrock.png")
 spike& = _LoadImage("graphics\spike.png")
 
-
+nextt& = _LoadImage("graphics\next.png")
 
 '$include:'world.bas'
 '$include:'world2.bas'
@@ -133,7 +133,13 @@ Do
 
                 ElseIf m = 7 Then
                     _PutImage (x * 16, y * 16), hero&
+
+                ElseIf m = 9 Then
+                    _PutImage (x * 16, y * 16), nextt&
                 End If
+
+
+
 
                 If e = 1 Then
                     _PutImage (x * 16, y * 16), hero&
@@ -223,6 +229,12 @@ Do
     End Select
     keyhit& = 0
     _KeyClear
+
+
+    If map(px + dx, py + dy) = 9 Then
+        level = level + 1
+        GoTo restartgame
+    End If
     If map(px + dx, py + dy) = 0 Then
         GoSub marchForth
     ElseIf map(px + dx, py + dy) = 2 Then
